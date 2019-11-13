@@ -3,6 +3,7 @@ image: docker:latest
 # improved performance.
 variables:
   DOCKER_DRIVER: overlay
+  DOCKER_TLS_CERTDIR: ''
 services:
 - docker:dind
 before_script:
