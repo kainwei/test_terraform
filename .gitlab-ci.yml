@@ -12,35 +12,35 @@ before_script:
   - pwd
   - sed -i '3s/123456/'$AWS_ACCESS_KEY'/' provider.tf
   - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
-  - echo $aws_pem > ./minaterraform.pem
-  - echo "-----END RSA PRIVATE KEY-----" >>./minaterraform.pem
-  - cat ./minaterraform.pem
+  - echo $aws_pem > ./1.pem
+  - echo "-----END RSA PRIVATE KEY-----" >>./1.pem
+  - diff minaterraform.pem 1.pem
   - cat ./provider.tf
   - terraform init
 
-stages:
-  - validate
-  - plan
-  - apply
+# stages:
+#   - validate
+#   - plan
+#   - apply
 
-validate:
-  stage: validate
-  script:
-    - terraform validate
+# validate:
+#   stage: validate
+#   script:
+#     - terraform validate
 
-plan:
-  stage: plan
-  script:
-    - terraform plan -out "planfile"
-  dependencies:
-    - validate
-  artifacts:
-    paths:
-      - planfile
+# plan:
+#   stage: plan
+#   script:
+#     - terraform plan -out "planfile"
+#   dependencies:
+#     - validate
+#   artifacts:
+#     paths:
+#       - planfile
 
-apply:
-  stage: apply
-  script:
-    - terraform apply -input=false "planfile"
-  dependencies:
-    - plan
+# apply:
+#   stage: apply
+#   script:
+#     - terraform apply -input=false "planfile"
+#   dependencies:
+#     - plan
