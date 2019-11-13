@@ -11,7 +11,7 @@ before_script:
   - terraform --version
   - pwd
   - sed -i '3s/123456/'$AWS_ACCESS_KEY'/' provider.tf
-  - sed -i '3s/my-secret-key/'$AWS_SERCERT_KEY'/' provider.tf
+  - sed -i '3s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
   - cat ./provider.tf
   - terraform init
 
