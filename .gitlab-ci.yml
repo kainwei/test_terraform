@@ -19,7 +19,7 @@ before_script:
 stages:
   - validate
   - plan
-#   - apply
+  - apply
   - destroy
 
 validate:
@@ -37,12 +37,12 @@ plan:
     paths:
       - planfile
 
-# apply:
-#   stage: apply
-#   script:
-#     - terraform apply -input=false "planfile"
-#   dependencies:
-#     - plan
+apply:
+  stage: apply
+  script:
+    - terraform apply -input=false "planfile"
+  dependencies:
+    - plan
 destroy:
   stage: destroy
   script:
