@@ -5,6 +5,9 @@ image:
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 variables:
   DOCKER_HOST: tcp://127.0.0.1:2375/    
+  TF_DIR: terraform
+  PLAN: plan.tfplan
+  S3_BUCKET: terraform-remote-state-defo
 
 before_script:
   - rm -rf .terraform
@@ -14,7 +17,7 @@ before_script:
   - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
   - echo  $aws_pem |base64 -d >./minaterraform.pem
   - cat ./provider.tf
-  - terraform init
+  - cd $TF_DIR && terraform init -input=false
 
 stages:
   - validate
@@ -25,24 +28,32 @@ stages:
 validate:
   stage: validate
   script:
-    - terraform validate
+    # - terraform validate
+    -  cd ../$TF_DIR && terraform validate -var-file=aws-demo.tfvars
 
 plan:
   stage: plan
   script:
-    - terraform plan -out "planfile"
-  dependencies:
-    - validate
+    # - terraform plan -out "planfile"
+    - cd ../$TF_DIR && terraform plan -var-file=aws-demo.tfvars -out=$PLAN
+    - cd ../$TF_DIR && aws s3 cp $PLAN s3://$S3_BUCKET/$PLAN
   artifacts:
+    name: plan
     paths:
-      - planfile
-
+      - $PLAN
 apply:
   stage: apply
   script:
-    - terraform apply -input=false "planfile"
+    - cd ../$TF_DIR && aws s3 cp s3://$S3_BUCKET/$PLAN $PLAN
+    - cd ../$TF_DIR && terraform apply -input=false $PLAN
   dependencies:
     - plan
+# apply:
+#   stage: apply
+#   script:
+#     - terraform apply -input=false "planfile"
+#   dependencies:
+#     - plan
 destroy:
   stage: destroy
   script:
