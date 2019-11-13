@@ -46,6 +46,6 @@ plan:
 destroy:
   stage: destroy
   script:
-    - terraform destory -input=false "planfile"
+    - terraform destory
   when: manual    
   
