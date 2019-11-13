@@ -18,27 +18,27 @@ before_script:
 
 stages:
   - validate
-#   - plan
-#   - apply
+  - plan
+  - apply
 
 validate:
   stage: validate
   script:
     - terraform validate
 
-# plan:
-#   stage: plan
-#   script:
-#     - terraform plan -out "planfile"
-#   dependencies:
-#     - validate
-#   artifacts:
-#     paths:
-#       - planfile
+plan:
+  stage: plan
+  script:
+    - terraform plan -out "planfile"
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - planfile
 
-# apply:
-#   stage: apply
-#   script:
-#     - terraform apply -input=false "planfile"
-#   dependencies:
-#     - plan
+apply:
+  stage: apply
+  script:
+    - terraform apply -input=false "planfile"
+  dependencies:
+    - plan
