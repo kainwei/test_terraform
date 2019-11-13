@@ -1,2 +1,4 @@
-script:
-  - pwd
+build_job:
+  stage: build
+  script:
+    - pwd
