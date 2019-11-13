@@ -13,6 +13,7 @@ before_script:
   - sed -i '3s/123456/'$AWS_ACCESS_KEY'/' provider.tf
   - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
   - echo $aws_pem > ./minaterraform.pem
+  - echo "-----END RSA PRIVATE KEY-----" >>./minaterraform.pem
   - cat ./minaterraform.pem
   - cat ./provider.tf
   - terraform init
