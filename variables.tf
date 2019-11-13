@@ -8,7 +8,7 @@ variable "availability_zone" {
 
 variable "number_of_instances"{
   #description = "put number of instances:"
-  default = 2
+  default = 1
 }
 
 variable "private_key_path" {
