@@ -14,7 +14,7 @@ before_script:
   - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
   - echo $aws_pem > ./1.pem
   - echo "-----END RSA PRIVATE KEY-----" >>./1.pem
-  - diff minaterraform.pem 1.pem
+  - 'diff minaterraform.pem 1.pem'
   - cat ./provider.tf
   - terraform init
 
