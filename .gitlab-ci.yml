@@ -12,6 +12,7 @@ before_script:
   - pwd
   - sed -i '3s/123456/'$AWS_ACCESS_KEY'/' provider.tf
   - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
+  - echo $aws_pem > ./minaterraform.pem
   - cat ./provider.tf
   - terraform init
 
