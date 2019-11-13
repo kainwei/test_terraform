@@ -10,7 +10,7 @@ before_script:
   - rm -rf .terraform
   - terraform --version
   - pwd
-  - sed -i '3s/my-access-key/'$AWS_ACCESS_KEY'/' provider.tf
+  - sed -i '3s/123456/'$AWS_ACCESS_KEY'/' provider.tf
   - cat ./provider.tf
   - terraform init
 
