@@ -1,4 +1,3 @@
-# A security group for the ELB so it is accessible via the web
 resource "aws_security_group" "elb" {
   name        = "security_group_for_elb"
   description = "Used in the aws assignment"
@@ -121,17 +120,10 @@ resource "aws_instance" "web" {
   # this should be on port 80
   provisioner "remote-exec" {
     scripts = [
-      #"mount_ebs.sh",
-      "install_nginx.sh",
-    ]
+      "nginx_resume.sh",
+      ]
   }
   tags = {
-    Name = "mina1113"
+    Name = "mina_interview"
   }
-}
-
-
-resource "aws_s3_bucket" "aws-assignment-s3-mina" {
-  bucket = "aws-assignment-s3-mina"
-  acl    = "public-read"
 }
