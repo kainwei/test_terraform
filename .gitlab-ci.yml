@@ -11,11 +11,7 @@ before_script:
   - terraform --version
   - pwd
   - sed -i '3s/my-access-key/'$AWS_ACCESS_KEY'/' provider.tf
-#   sed -i '3s/123456/'$a'/' provider.tf
-#   - echo "aws_access_key_id ="$AWS_ACCESS_KEY >>~/.aws/credentials
-#   - export AWS_ACCESS_KEY
-#   - export AWS_SECRET_KEY
-#   - echo $AWS_ACCESS_KEY
+  - cat ./provider.tf
   - terraform init
 
 stages:
