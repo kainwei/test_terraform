@@ -20,6 +20,7 @@ stages:
   - validate
   - plan
   - apply
+  - destory
 
 validate:
   stage: validate
@@ -42,3 +43,8 @@ apply:
     - terraform apply -input=false "planfile"
   dependencies:
     - plan
+destory:
+    stage: destory
+  script:
+    - terraform destory -input=false "planfile"
+  
