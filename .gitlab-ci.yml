@@ -7,3 +7,6 @@ services:
 - docker:dind
 before_script:
 - docker info
+build:
+  script: 
+   - docker info
