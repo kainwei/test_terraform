@@ -1,28 +1,45 @@
-image: ubuntu:latest
-
+image:
+  name: hashicorp/terraform:light
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 services:
-  - docker:dind
-
+  - docker:dind    
 variables:
-  #DOCKER_DRIVER: overlay2
-  #DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://127.0.0.1:2375/
 
 before_script:
-  - apt-get update
-  - apt-get install -y apt-transport-https ca-certificates curl software-properties-common rsync openssh-client
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add
-  - apt-key fingerprint 0EBFCD88
-  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  - apt-get update
+  - rm -rf .terraform
+  - terraform --version
+  - mkdir -p ./creds
+  - echo $SERVICEACCOUNT | base64 -d > ./creds/serviceaccount.json
+  - terraform init
 
 stages:
-    - test
+  - validate
+  - plan
+  - apply
 
-test:
-  stage: test
+validate:
+  stage: validate
   script:
-    - apt-get install -y docker-ce
-    - docker info
-    - docker pull ...
-    - docker run -p 8000:8000 -d --name ...
+    - terraform --version
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out "planfile"
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - planfile
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -input=false "planfile"
+  dependencies:
+    - plan
+  when: manual
