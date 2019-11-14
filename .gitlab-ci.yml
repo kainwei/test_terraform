@@ -9,15 +9,15 @@ variables:
 before_script:
   - rm -rf .terraform
   - terraform --version
-  - sed -i '3s/my-access-key/'$AWS_ACCESS_KEY'/' aws-demo.tf
-  - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' aws-demo.tf
+  - sed -i '3s/my-access-key/'$AWS_ACCESS_KEY'/' terraform_test.tf
+  - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' terraform_test.tf
   - echo  $aws_pem |base64 -d >./minaterraform.pem
-  - cat ./aws-demo.tf
-  - echo "availability_zone = " '"'$availability_zone'"' >./aws-demo.tfvars
-  - echo "key_name = "'"'$key_name'"' >>./aws-demo.tfvars
-  - echo "ec2_count = "$ec2_count >>./aws-demo.tfvars
-  - echo "private_key_path = "'"'$private_key_path'"' >>./aws-demo.tfvars
-  - cat ./aws-demo.tfvars
+  - cat ./terraform_test.tf
+  - echo "availability_zone = " '"'$availability_zone'"' >./terraform_test.tfvars
+  - echo "key_name = "'"'$key_name'"' >>./terraform_test.tfvars
+  - echo "ec2_count = "$ec2_count >>./terraform_test.tfvars
+  - echo "private_key_path = "'"'$private_key_path'"' >>./terraform_test.tfvars
+  - cat ./terraform_test.tfvars
   - terraform init -input=false
 
 stages:
@@ -29,12 +29,12 @@ stages:
 validate:
   stage: validate
   script:
-     - terraform validate -var-file=aws-demo.tfvars
+     - terraform validate -var-file=terraform_test.tfvars
 
 plan:
   stage: plan
   script:
-    - terraform plan -var-file=aws-demo.tfvars -out "planfile"
+    - terraform plan -var-file=terraform_test.tfvars -out "planfile"
   dependencies:
     - validate
   artifacts:
@@ -44,7 +44,7 @@ plan:
 apply:
   stage: apply
   script:
-    # - terraform apply -var-file=aws-demo.tfvars -input=false 
+    # - terraform apply -var-file=terraform_test.tfvars -input=false 
     - terraform apply -input=false "planfile"
   dependencies:
     - plan
