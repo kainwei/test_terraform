@@ -22,9 +22,9 @@ before_script:
 
 stages:
   - validate
-#   - plan
-#   - apply
-#   - destroy
+  - plan
+  - apply
+  - destroy
 
 validate:
   stage: validate
