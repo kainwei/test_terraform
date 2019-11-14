@@ -44,7 +44,7 @@ plan:
 apply:
   stage: apply
   script:
-    - terraform apply -var-file=aws-demo.tfvars -input=false "planfile"
+    - terraform apply -var-file=aws-demo.tfvars -input=false 
   dependencies:
     - plan
 destroy:
