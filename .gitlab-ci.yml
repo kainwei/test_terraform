@@ -30,27 +30,26 @@ validate:
   stage: validate
   script:
      - terraform validate -var-file=aws-demo.tfvars
-    # - terraform validate
 
-# plan:
-#   stage: plan
-#   script:
-#     - terraform plan -var-file=aws-demo.tfvars -out "planfile"
-#   dependencies:
-#     - validate
-#   artifacts:
-#     paths:
-#       - planfile
+plan:
+  stage: plan
+  script:
+    - terraform plan -var-file=aws-demo.tfvars -out "planfile"
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - planfile
 
-# apply:
-#   stage: apply
-#   script:
-#     - terraform apply -var-file=aws-demo.tfvars -input=false "planfile"
-#   dependencies:
-#     - plan
-# destroy:
-#   stage: destroy
-#   script:
-#     - terraform destroy -force
-#   when: manual    
+apply:
+  stage: apply
+  script:
+    - terraform apply -var-file=aws-demo.tfvars -input=false "planfile"
+  dependencies:
+    - plan
+destroy:
+  stage: destroy
+  script:
+    - terraform destroy -force
+  when: manual    
   
