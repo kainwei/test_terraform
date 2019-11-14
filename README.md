@@ -2,7 +2,7 @@
 This is a terraform test code that implements the following features.
 
 - A VPC. include a subnet, route table, and internet gateway.
-- An EC2 instance, running a web server()
+- An EC2 instance, running a web server(http://aws-assignment-elb-2069037378.ap-southeast-2.elb.amazonaws.com/)
 - This use AWS Free Tier instance
 - An Application Load Balancer targeting the EC2 instance.
 - All the resouces use modules and input/output variables
