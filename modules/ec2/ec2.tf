@@ -33,7 +33,8 @@ resource "aws_instance" "web" {
     user = "ubuntu"
 
     type        = "ssh"
-    private_key = "${file("./minaterraform.pem")}"
+    #private_key = "${file("./minaterraform.pem")}"
+    private_key = "${file(var.private_key_path)}"
 
     # The connection will use the local SSH agent for authentication.
   }

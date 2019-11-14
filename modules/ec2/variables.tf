@@ -15,6 +15,10 @@ variable "key_name" {
   description = "put key name"
 }
 
+variable "private_key_path" {
+  description = "put key name"
+}
+
 variable "ec2_count" {
   #default=2
   description = "put key name"
