@@ -20,16 +20,17 @@ before_script:
   - cat ./aws-demo.tfvars
   - terraform init -input=false
 
-# stages:
-#   - validate
+stages:
+  - validate
 #   - plan
 #   - apply
 #   - destroy
 
-# validate:
-#   stage: validate
-#   script:
-#     - terraform validate -var-file=aws-demo.tfvars
+validate:
+  stage: validate
+  script:
+    # - terraform validate -var-file=aws-demo.tfvars
+    - terraform validate
 
 # plan:
 #   stage: plan
@@ -52,3 +53,4 @@ before_script:
 #   script:
 #     - terraform destroy -force
 #   when: manual    
+  
