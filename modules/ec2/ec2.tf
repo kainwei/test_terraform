@@ -1,31 +1,9 @@
-resource "aws_security_group" "elb" {
-  name        = "security_group_for_elb"
-  description = "Used in the aws assignment"
-  vpc_id      = "${aws_vpc.default.id}"
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # outbound internet access
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 # Our default security group to access
 # the instances over SSH and HTTP
 resource "aws_security_group" "default" {
   name        = "security_group_for_ec2"
   description = "Used in the aws assignment"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = "${var.vpc_id}"
 
   # SSH access from anywhere
   ingress {
@@ -35,13 +13,6 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # HTTP access from the VPC
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   # outbound internet access
   egress {
@@ -52,37 +23,9 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_elb" "web" {
-  name = "aws-assignment-elb"
-
-  subnets         = ["${aws_subnet.default.id}"]
-  security_groups = ["${aws_security_group.elb.id}"]
-  instances       = ["${aws_instance.web.*.id}"]
-
-  listener {
-    instance_port     = 80
-    instance_protocol = "http"
-    lb_port           = 80
-    lb_protocol       = "http"
-  }
-
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
-    target              = "HTTP:80/"
-    interval            = 30
-  }
-}
-
-# As use a key pair already created in the aws.
-# resource "aws_key_pair" "auth" {
-#   key_name   = "${var.key_name}"
-#   public_key = "${file(var.public_key_path)}"
-# }
-
 resource "aws_instance" "web" {
-  count = "${var.number_of_instances}"
+   #count = "${var.ec2_size}"
+ count         = "${var.instance_count}"
   # The connection block tells our provisioner how to
   # communicate with the resource (instance)
   connection {
@@ -90,14 +33,14 @@ resource "aws_instance" "web" {
     user = "ubuntu"
 
     type        = "ssh"
-    private_key = "${file(var.private_key_path)}"
+    private_key = "${file("./minaterraform.pem")}"
 
     # The connection will use the local SSH agent for authentication.
   }
   instance_type = "t2.micro"
   # Lookup the correct AMI based on the region
   # we specified
-  ami = "${lookup(var.amis, var.region)}"
+  ami = "${lookup(var.amis, "ap-southeast-2")}"
 
   # Use az from variables we specified
   availability_zone = "${var.availability_zone}"
@@ -111,9 +54,7 @@ resource "aws_instance" "web" {
   # We're going to launch into the same subnet as our ELB. In a production
   # environment it's more common to have a separate private subnet for
   # backend instances.
-  subnet_id = "${aws_subnet.default.id}"
-
-
+  subnet_id = "${var.subnet_id}"
 
   # We run a remote provisioner on the instance after creating it.
   # In this case, we just install nginx and start it. By default,
@@ -127,3 +68,4 @@ resource "aws_instance" "web" {
     Name = "mina_interview"
   }
 }
+
