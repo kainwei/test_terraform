@@ -44,7 +44,7 @@ auto-demo.tfvars
 ```
 # aws-demo.tfvars
 availability_zone = "ap-southeast-2a"
-key_name= "minaterraform"  
+key_name = "minaterraform"  
 ec2_count = 2     //numbers of instance
 private_key_path = "xxx/xxx.pem" 
 ```
