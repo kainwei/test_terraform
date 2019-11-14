@@ -9,11 +9,15 @@ variables:
 before_script:
   - rm -rf .terraform
   - terraform --version
-  - pwd
-  - sed -i '3s/123456/'$AWS_ACCESS_KEY'/' provider.tf
-  - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' provider.tf
+  - sed -i '3s/my-access-key/'$AWS_ACCESS_KEY'/' aws-demo.tf
+  - sed -i '4s/my-secret-key/'$AWS_SECRET_KEY'/' aws-demo.tf
   - echo  $aws_pem |base64 -d >./minaterraform.pem
-  - cat ./provider.tf
+  - cat ./aws-demo.tf
+  - echo $availability_zone >./aws-demo.tfvars
+  - echo $key_name >>./aws-demo.tfvars
+  - echo $ec2_count >>./aws-demo.tfvars
+  - echo $private_key_path >>./aws-demo.tfvars
+  - cat ./aws-demo.tfvars
   - terraform init -input=false
 
 stages:
@@ -25,12 +29,12 @@ stages:
 validate:
   stage: validate
   script:
-    - terraform validate
+    - terraform validate -var-file=aws-demo.tfvars
 
 plan:
   stage: plan
   script:
-    - terraform plan -out "planfile"
+    - terraform plan -var-file=aws-demo.tfvars -out "planfile"
   dependencies:
     - validate
   artifacts:
@@ -40,7 +44,7 @@ plan:
 apply:
   stage: apply
   script:
-    - terraform apply -input=false "planfile"
+    - terraform apply -var-file=aws-demo.tfvars -input=false "planfile"
   dependencies:
     - plan
 destroy:
