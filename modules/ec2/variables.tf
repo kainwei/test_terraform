@@ -10,18 +10,15 @@ variable "availability_zone" {
   description = "put availability zone"
 }
 
-#variable "ec2_size" {
-# default=1
- #description = "put number of instances:"
-#}
-variable "instance_count" {
-  default = 2
-}
 
 variable "key_name" {
   description = "put key name"
 }
 
+variable "ec2_count" {
+  #default=2
+  description = "put key name"
+}
 
 variable "amis" {
   type = "map"

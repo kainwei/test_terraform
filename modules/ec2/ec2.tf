@@ -25,7 +25,7 @@ resource "aws_security_group" "default" {
 
 resource "aws_instance" "web" {
    #count = "${var.ec2_size}"
- count         = "${var.instance_count}"
+ count         = "${var.ec2_count}"
   # The connection block tells our provisioner how to
   # communicate with the resource (instance)
   connection {

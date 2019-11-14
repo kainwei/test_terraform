@@ -16,11 +16,3 @@ resource "aws_route" "internet_access" {
   gateway_id             = "${aws_internet_gateway.default.id}"
 }
 
-# Create a subnet to launch our instances into
-resource "aws_subnet" "default" {
-  # Use az from variables we specified
-  availability_zone       = "${var.availability_zone}"
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
-}

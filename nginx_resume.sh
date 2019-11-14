@@ -8,7 +8,7 @@ sudo rm -rf /etc/nginx/sites-enabled/*
 sudo rm -rf /usr/share/nginx/html/*
 
 # build page
-PROJECT_DIR="nginx-resume"
+PROJECT_DIR="nginx_resume"
 sudo rm -rf ./${PROJECT_DIR}
 sudo git clone https://github.com/shiboyan/nginx_resume.git
 sudo cp ./${PROJECT_DIR}/hello.conf /etc/nginx/sites-enabled/
