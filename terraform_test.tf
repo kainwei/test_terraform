@@ -6,31 +6,31 @@ provider "aws" {
 
 module "vpc" {
   source            = "modules/vpc"
-  availability_zone = "${var.availability_zone}"
+  availability_zone = var.availability_zone
 }
 
 module "subnet" {
   source            = "modules/subnet"
-  availability_zone = "${var.availability_zone}"
-  vpc_id            = "${module.vpc.id}"
+  availability_zone = var.availability_zone
+  vpc_id            = module.vpc.id
 }
 
 module "ec2" {
   source            = "modules/ec2"
-  availability_zone = "${var.availability_zone}"
-  ec2_count         = "${var.ec2_count}"
+  availability_zone = var.availability_zone
+  ec2_count         = var.ec2_count
 
-  private_key_path = "${var.private_key_path}"
-  key_name         = "${var.key_name}"
-  vpc_id           = "${module.vpc.id}"
-  subnet_id        = "${module.subnet.id}"
+  private_key_path = var.private_key_path
+  key_name         = var.key_name
+  vpc_id           = module.vpc.id
+  subnet_id        = module.subnet.id
 }
 
 module "elb" {
   source           = "modules/elb"
-  vpc_id           = "${module.vpc.id}"
-  subnet_ids       = "${module.subnet.ids}"
-  instaces_web_ids = "${module.ec2.ids}"
+  vpc_id           = module.vpc.id
+  subnet_ids       = module.subnet.ids
+  instaces_web_ids = module.ec2.ids
 }
 
 variable "availability_zone" {

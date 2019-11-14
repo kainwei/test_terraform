@@ -2,21 +2,18 @@
 This is a terraform test code that implements the following features.
 
 - A VPC. include a subnet, route table, and internet gateway.
-- An EC2 instance, running a web server
+- An EC2 instance, running a web server(http://aws-assignment-elb-2069037378.ap-southeast-2.elb.amazonaws.com/)
 - This use AWS Free Tier instance
-- An Application Load Balancer targeting the EC2 instance.(http://aws-assignment-elb-2069037378.ap-southeast-2.elb.amazonaws.com/)
+- An Application Load Balancer targeting the EC2 instance.
 - All the resouces use modules and input/output variables
 - EC2 instances can only access through 22 port
-- Can modify EC2 instances count through variable setting and trigger ci/cd pipeline
+- Can modify EC2 instances account and trigger ci/cd pipeline
 
 # How to  deploy
 
 ## CI/CD automatic deploy
 
 # GitlabCI [![Build Status](http://img.shields.io/travis/fatih/hclfmt.svg?style=flat-square)](http://3.88.51.197/root/terraform_test/pipelines)
-
-http://3.88.51.197/root/terraform_test/pipelines (This is my personal Gitlabci)
-
 I created a ci/cd pipeline to automatically deploy terraform code, set github webhook, once there's a push action happened,it will trigger automatic deployment.
 
 ![GitlabCICD](img/cicd.png)
@@ -47,7 +44,7 @@ auto-demo.tfvars
 ```
 # aws-demo.tfvars
 availability_zone = "ap-southeast-2a"
-key_name= "minaterraform"  
+key_name = "minaterraform"  
 ec2_count = 2     //numbers of instance
 private_key_path = "xxx/xxx.pem" 
 ```
