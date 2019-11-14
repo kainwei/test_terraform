@@ -3,7 +3,7 @@
 resource "aws_security_group" "default" {
   name        = "security_group_for_ec2"
   description = "Used in the aws assignment"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
   # SSH access from anywhere
   ingress {
@@ -30,7 +30,7 @@ resource "aws_security_group" "default" {
 
 resource "aws_instance" "web" {
   #count = "${var.ec2_size}"
-  count = "${var.ec2_count}"
+  count = var.ec2_count
 
   # The connection block tells our provisioner how to
   # communicate with the resource (instance)
@@ -41,7 +41,7 @@ resource "aws_instance" "web" {
     type = "ssh"
 
     #private_key = "${file("./minaterraform.pem")}"
-    private_key = "${file(var.private_key_path)}"
+    private_key = file(var.private_key_path)
 
     # The connection will use the local SSH agent for authentication.
   }
@@ -50,21 +50,21 @@ resource "aws_instance" "web" {
 
   # Lookup the correct AMI based on the region
   # we specified
-  ami = "${lookup(var.amis, "ap-southeast-2")}"
+  ami = lookup(var.amis, "ap-southeast-2")
 
   # Use az from variables we specified
-  availability_zone = "${var.availability_zone}"
+  availability_zone = var.availability_zone
 
   # The name of our SSH keypair we created above.
-  key_name = "${var.key_name}"
+  key_name = var.key_name
 
   # Our Security group to allow HTTP and SSH access
-  vpc_security_group_ids = ["${aws_security_group.default.id}"]
+  vpc_security_group_ids = [aws_security_group.default.id]
 
   # We're going to launch into the same subnet as our ELB. In a production
   # environment it's more common to have a separate private subnet for
   # backend instances.
-  subnet_id = "${var.subnet_id}"
+  subnet_id = var.subnet_id
 
   # We run a remote provisioner on the instance after creating it.
   # In this case, we just install nginx and start it. By default,
