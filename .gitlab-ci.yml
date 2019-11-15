@@ -24,35 +24,35 @@ before_script:
 
 stages:
   - validate
-#   - plan
-#   - apply
-#   - destroy
+  - plan
+  - apply
+  - destroy
 
 validate:
   stage: validate
   script:
      - terraform validate -var-file=terraform_test.tfvars
 
-# plan:
-#   stage: plan
-#   script:
-#     - terraform plan -var-file=terraform_test.tfvars -out "planfile"
-#   dependencies:
-#     - validate
-#   artifacts:
-#     paths:
-#       - planfile
+plan:
+  stage: plan
+  script:
+    - terraform plan -var-file=terraform_test.tfvars -out "planfile"
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - planfile
 
-# apply:
-#   stage: apply
-#   script:
-#     # - terraform apply -var-file=terraform_test.tfvars -input=false 
-#     - terraform apply -input=false "planfile"
-#   dependencies:
-#     - plan
-# destroy:
-#   stage: destroy
-#   script:
-#     - terraform destroy -var-file=terraform_test.tfvars -force
-#   when: manual    
+apply:
+  stage: apply
+  script:
+    # - terraform apply -var-file=terraform_test.tfvars -input=false 
+    - terraform apply -input=false "planfile"
+  dependencies:
+    - plan
+destroy:
+  stage: destroy
+  script:
+    - terraform destroy -var-file=terraform_test.tfvars -force
+  when: manual    
   
