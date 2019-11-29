@@ -21,10 +21,7 @@ before_script:
   - echo "subnet_cidrs =["'"'$subnet_cidr1'"','"'$subnet_cidr2'"'"]" >>./terraform_test.tfvars
   - cat ./terraform_test.tfvars
   - terraform init -input=false
-  only:
-    - dev0.12
-  except:
-    - master
+
 
 
 stages:
