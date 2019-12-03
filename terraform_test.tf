@@ -1,8 +1,8 @@
 provider "aws" {
   region = var.aws_region
-  #access_key = "my-access-key"
-  #secret_key = "my-secret-key"
-  shared_credentials_file = "~/.aws/credentials"
+  access_key = "my-access-key"
+  secret_key = "my-secret-key"
+  #shared_credentials_file = "~/.aws/credentials"
 }
 
 module "vpc" {
